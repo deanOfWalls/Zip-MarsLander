@@ -80,6 +80,7 @@ public class Simulation {
             return status.getStatus();
         }
         return -1;
+//        return vehicle.Flying;
     }
 
     public static void main(String[] args) {
@@ -96,5 +97,3 @@ public class Simulation {
     }
 
 }
-
-
