@@ -1,16 +1,19 @@
+import jdk.jshell.Snippet;
+
 public class Simulation {
     private final Vehicle vehicle;
 
     public Simulation(Vehicle v) {
         this.vehicle = v;
     }
+
     // Mars Simulation Source Code.
     static String version = "2.0"; /* The Version of the program */
 
     public static int randomaltitude() {
         int max = 20000;
         int min = 10000;
-        int r = (int)(Math.random() * (max - min)) + min;
+        int r = (int) (Math.random() * (max - min)) + min;
         return (r % 15000 + 4000);
     }
 
@@ -29,19 +32,22 @@ public class Simulation {
     public String getHeader() {
         String s = "";
         s = s + "\nTime\t";
-        s = s + "Velocity\t\t"; s = s + "Fuel\t\t";
-        s = s + "Altitude\t\t"; s = s + "Burn\n";
+        s = s + "Velocity\t\t";
+        s = s + "Fuel\t\t";
+        s = s + "Altitude\t\t";
+        s = s + "Burn\n";
         s = s + "----\t";
         s = s + "-----\t\t";
         s = s + "----\t\t";
-        s = s + "------\t\t"; s = s + "----\n";
+        s = s + "------\t\t";
+        s = s + "----\n";
         return s;
     }
 
 
     public void printString(String string) {
 // print long strings with new lines the them.
-    String[] a = string.split("\r?\n");
+        String[] a = string.split("\r?\n");
         for (String s : a) {
             System.out.println(s);
         }
@@ -51,18 +57,22 @@ public class Simulation {
     public int runSimulation(BurnStream burnSource) {
         DescentEvent status = null;
         int burnInterval = 0;
+//        DescentEvent descentEvent = new DescentEvent(1, this.vehicle.Velocity, this.vehicle.Fuel, this.vehicle.Altitude, this.vehicle.Flying);
         printString(gameHeader());
         printString(getHeader());
         while (vehicle.stillFlying()) {
             status = vehicle.getStatus(burnInterval);
-            System.out.print(status.toString()+"\t\t");
+            System.out.print(status.toString() + "\t\t");
             vehicle.adjustForBurn(burnSource.getNextBurn(status));
             if (vehicle.outOfFuel()) {
                 break;
             }
             burnInterval++;
             if (burnInterval % 9 == 0) {
+                // todo - come back to this later to check for last test failure
+                status = vehicle.getStatus(burnInterval); //
                 printString(getHeader());
+
             }
         }
         printString(vehicle.checkFinalStatus());
@@ -74,8 +84,17 @@ public class Simulation {
 
     public static void main(String[] args) {
         // create a new Simulation object with a random starting altitude
+        Simulation simulation = new Simulation(new Vehicle(randomaltitude()));
         // create a new BurnInputStream
+        // BurnInputStream burnInputStream = new BurnInputStream();
         // pass the new BurnInputStream to the runSimulation method
+        OnBoardComputer onBoardComputer = new OnBoardComputer();
+        //onBoardComputer.getNextBurn(descentEvent);
+        simulation.runSimulation(onBoardComputer);
+
+
     }
 
 }
+
+
